@@ -83,3 +83,4 @@ def show_norm():
 
 if __name__ == '__main__':
     print(timeit.timeit("show_norm()", setup="from __main__ import show_norm", number = 100)/100)
+"""У процесі роботи був використаний критерій Романовського для перевірки однорідності дисперсії"""
