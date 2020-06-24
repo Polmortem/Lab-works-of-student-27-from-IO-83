@@ -6,6 +6,9 @@ from functools import partial
 from random import randint
 from prettytable import PrettyTable
 
+znachimie = 0
+ne_znachimie = 0
+
 def cochrane(g_prac, g_teor):
     return g_prac < g_teor
 def student(t_teor, t_pr):
@@ -115,10 +118,12 @@ while True:
         print("t table = ", T)
         for i in range(len(t_list)):
             if student(t_list[i], T):
+                ne_znachimie += 1
                 beta_list[i] = 0
                 print("Гіпотеза підтверджена, бета {} = 0".format(i))
             else:
                 print("Гіпотеза НЕ підтверджена, бета {} = {}".format(i, beta_list[i]))
+                znachimie +=1
                 d += 1
         factors[0] = None
         y_student = [sum([a * b[x_idx] if b else a for a, b in zip(beta_list, x_arr)]) for x_idx in range(8)]
@@ -132,3 +137,7 @@ while True:
     else:
         print("Дисперсія не є однорідною.")
         m += 1
+
+print (f"Кільскість значимих коефіцієнтів: {znachimie}")
+print (f"Кількість не значимих коефіцієнтів: {ne_znachimie}")
+"""Значимі коефіцієнти впливають на статистичне значення регресії. Оскільки вони залишаються в рівнянні регресії, а не значимі виключаються оскільки до них застосовується нуль-гіпотеза"""
