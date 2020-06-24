@@ -3,6 +3,7 @@ from scipy.stats import f, t
 from random import randrange
 from math import sqrt, fabs as fab
 from numpy.linalg import solve
+from datetime import datetime, timedelta
 
 dependent, independent = 0, 0
 x1 = [10, 60]
@@ -92,21 +93,27 @@ def check_result(arr_b, k):
 
 
 def student_test(arr_b, number_x=10):
+    start_time = datetime.now()
     dispersion_b = sqrt(dispersion_b2)
     for column in range(number_x + 1):
         t_practice = 0
         t_theoretical = student(f3, q)
         for row in range(N): t_practice += middle_y[row] / N if column == 0 else middle_y[row] * matrix_pe[row][column - 1]
         if fab(t_practice / dispersion_b) < t_theoretical: arr_b[column] = 0
+    end_time = datetime.now()
+    print("Час виконання перевірки значимості за Стьюдентом : ", str(end_time - start_time))
     return arr_b
 
 
 def fischer_test():
+    start_time = datetime.now()
     dispersion_ad = 0
     f4 = N - d
     for row in range(len(middle_y)): dispersion_ad += (m * (middle_y[row] - check_result(student_arr, row))) / (N - d)
     f_practice = dispersion_ad / dispersion_b2
     f_theoretical = fischer(f3, f4, q)
+    end_time = datetime.now()
+    print("Час виконання перевірки адекватності моделі за Фішером : ", str(end_time - start_time))
     return f_practice < f_theoretical
 
 m = 3
@@ -167,8 +174,12 @@ while not homogeneity:
     f3 = f1 * f2
     q = 1 - p
     Gp = max(dispersion_y) / sum(dispersion_y)
+    start_time = datetime.now ()
     print("Критерій Кохрена")
     Gt = cochrane(f2, f1, q)
+    end_time = datetime.now ()
+
+    print ("Час виконання перевірки Кохрена: ", str(end_time - start_time))
     if Gt > Gp and m < 25:
         print("Дисперсія однорідна з q = {:.2f}!\n".format(q))
         homogeneity = True
